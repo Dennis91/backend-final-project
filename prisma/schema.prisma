@@ -1,0 +1,82 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  reviewFeatures = ["omitApi"]
+}
+
+datasource db {
+  provider     = "sqlite"
+  url          = "file:./dev.db"
+  relationMode = "prisma"
+}
+
+model User {
+  id          String @id @default(uuid())
+  username    String @unique
+  password    String
+  name        String
+  email       String
+  phoneNumber String
+  pictureUrl  String
+}
+
+model Booking {
+  id             String   @id @default(uuid())
+  userId         String   @default(uuid())
+  checkinDate    DateTime
+  checkoutDate   DateTime
+  numberOfGuests Int
+  totalPrice     Float
+  bookingStatus  String
+  property       Property @relation(fields: [propertyId], references: [id])
+  propertyId     String   @default(uuid())
+}
+
+model Review {
+  id         String   @id @default(uuid())
+  userId     String   @default(uuid())
+  rating     Int
+  comment    String
+  property   Property @relation(fields: [propertyId], references: [id])
+  propertyId String   @default(uuid())
+}
+
+model Property {
+  id            String    @id @default(uuid())
+  title         String
+  description   String
+  location      String
+  pricePerNight Float
+  bedroomCount  Int
+  bathroomCount Int
+  maxGuestCount Int
+  rating        Int
+  amenities     Amenity[] 
+  reviews       Review[]
+  bookings      Booking[]
+  hostId        String
+  host          Host      @relation(fields: [hostId], references: [id])
+}
+
+model Amenity {
+  id         String    @id @default(uuid())
+  name       String
+  properties Property[]
+}
+
+model Host {
+  id          String     @id @default(uuid())
+  username    String     @unique
+  password    String
+  name        String
+  email       String
+  phoneNumber String
+  pictureUrl  String
+  aboutMe     String
+  listings    Property[]
+}
