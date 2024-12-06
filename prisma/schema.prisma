@@ -33,8 +33,10 @@ model Booking {
   numberOfGuests Int
   totalPrice     Float
   bookingStatus  String
-  property       Property @relation(fields: [propertyId], references: [id])
+  property       Property @relation(fields: [propertyId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   propertyId     String   @default(uuid())
+
+  @@index([propertyId])
 }
 
 model Review {
@@ -42,8 +44,10 @@ model Review {
   userId     String   @default(uuid())
   rating     Int
   comment    String
-  property   Property @relation(fields: [propertyId], references: [id])
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   propertyId String   @default(uuid())
+
+  @@index([propertyId])
 }
 
 model Property {
@@ -60,7 +64,9 @@ model Property {
   reviews       Review[]
   bookings      Booking[]
   hostId        String
-  host          Host      @relation(fields: [hostId], references: [id])
+  host          Host      @relation(fields: [hostId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@index([hostId])
 }
 
 model Amenity {

@@ -22,7 +22,15 @@ router.post("/", authMiddleware, async (req, res, next) => {
 	try {
 		const newUser = req.body;
 		const user = await createUser(newUser);
-		res.status(201).json(user);
+
+		if (user) {
+			console.log("NOT created");
+			res.status(201).json(user);
+		} else {
+			res.status(400).json({
+				message: "User not created",
+			});
+		}
 	} catch (error) {
 		next(error);
 	}

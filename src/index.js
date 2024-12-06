@@ -27,10 +27,6 @@ Sentry.init({
 app.use(Sentry.Handlers.requestHandler());
 app.use(Sentry.Handlers.tracingHandler());
 
-app.get("/", (req, res) => {
-	res.send("Hello world!");
-});
-
 app.use(express.json());
 app.use(logMiddleware);
 

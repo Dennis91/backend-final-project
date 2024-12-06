@@ -69,7 +69,7 @@ router.put("/:id", authMiddleware, async (req, res, next) => {
 router.delete("/:id", authMiddleware, async (req, res, next) => {
 	try {
 		const { id } = req.params;
-		await deleteHost(id);
+		const host = await deleteHost(id);
 
 		if (host) {
 			res.status(200).send({
